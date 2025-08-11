@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Root cause</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #e8f5e9, #f1f8e9);
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #2e7d32;
+            font-size: 2.5rem;
+        }
+        .container {
+            background: white;
+            max-width: 550px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        input[type="file"] {
+            padding: 10px;
+            margin: 20px 0;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #1b5e20;
+        }
+        .prediction {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #1b5e20;
+            font-weight: bold;
+        }
+        .confidence {
+            font-size: 1rem;
+            color: #388e3c;
+        }
+        .preview-img {
+            margin-top: 15px;
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            border: 2px solid #c8e6c9;
+        }
+        footer {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Root Cause</h1>
+        <p>Upload a plant leaf image to identify possible diseases.</p>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" id="fileInput" accept="image/*" required><br>
+            <img id="preview" class="preview-img" style="display:none;"><br>
+            <button type="submit"> Predict</button>
+        </form>
+
+        {% if prediction %}
+            <div class="prediction">Prediction: {{ prediction }}</div>
+            {% if confidence %}
+                <div class="confidence">Confidence: {{ confidence }}%</div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById("fileInput").addEventListener("change", function(event) {
+            const preview = document.getElementById("preview");
+            const file = event.target.files[0];
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = "block";
+            } else {
+                preview.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>
